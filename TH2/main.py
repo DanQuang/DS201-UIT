@@ -12,11 +12,11 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(42)
 
 # Load data
-train_dataset = dataset.FashionMNISTDataset("C:/Users/tquan/OneDrive/Desktop/DS201/TH2/Data/train-images-idx3-ubyte",
-                                            "C:/Users/tquan/OneDrive/Desktop/DS201/TH2/Data/train-labels-idx1-ubyte")
+train_dataset = dataset.FashionMNISTDataset("D:/Project/DS201/TH2/Data/train-images-idx3-ubyte",
+                                            "D:/Project/DS201/TH2/Data/train-labels-idx1-ubyte")
 
-test_dataset = dataset.FashionMNISTDataset("C:/Users/tquan/OneDrive/Desktop/DS201/TH2/Data/t10k-images-idx3-ubyte",
-                                           "C:/Users/tquan/OneDrive/Desktop/DS201/TH2/Data/t10k-labels-idx1-ubyte")
+test_dataset = dataset.FashionMNISTDataset("D:/Project/DS201/TH2/Data/t10k-images-idx3-ubyte",
+                                           "D:/Project/DS201/TH2/Data/t10k-labels-idx1-ubyte")
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
@@ -26,9 +26,18 @@ test_dataloader = DataLoader(test_dataset, 32, True, collate_fn= utils.collate_f
 model_0 = FashionMNISTModel().to(device)
 
 # Loss and optimizer, Accuracy, Precision, Recall, F1-score
+# SGD
 optimizer = optim.SGD(model_0.parameters(),
                       lr = 0.01,
                       momentum= 0.5)
+# # RMSrpop
+# optimizer = optim.RMSprop(model_0.parameters(),
+#                           lr= 0.01,
+#                           momentum= 0.9)
+# # Adam
+# optimizer = optim.Adam(model_0.parameters(),
+#                           lr= 1e-5)
+
 loss_fn = nn.CrossEntropyLoss().to(device)
 Acc_fn = Accuracy(task= "multiclass", num_classes= 10)
 Prec_fn = Precision(task= "multiclass", num_classes= 10, average= "macro")
@@ -50,6 +59,10 @@ for epoch in range(5):
         # Forward
         y_logits = model_0(X)
         loss = loss_fn(y_logits, y)
+        
+        # # L2 Regularization - Use if need use L2
+        # loss = loss_fn(y_logits, y) + model_0.l2_regularization()
+
         loss_all += loss.item()
 
         # Backward
