@@ -3,6 +3,7 @@ from torch import nn
 from torch.utils.data import Dataset, DataLoader
 from data_utils import dataset, utils
 from model.LeNet import LeNetModel
+from model.GoogLeNet import GoogLeNet
 from torch import optim
 from torchmetrics import Accuracy, F1Score, Precision, Recall
 from tqdm.auto import tqdm
@@ -13,18 +14,18 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(42)
 
 # load data
-train_dataset = dataset.MNISTDataset("C:/Users/tquan/OneDrive/Desktop/DS201/TH3/Data/train-images.idx3-ubyte",
-                                     "C:/Users/tquan/OneDrive/Desktop/DS201/TH3/Data/train-labels.idx1-ubyte")
+train_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/train-images.idx3-ubyte",
+                                            "D:/Project/DS201/TH3/Data/train-labels.idx1-ubyte")
 
-test_dataset = dataset.MNISTDataset("C:/Users/tquan/OneDrive/Desktop/DS201/TH3/Data/t10k-images.idx3-ubyte",
-                                     "C:/Users/tquan/OneDrive/Desktop/DS201/TH3/Data/t10k-labels.idx1-ubyte")
+test_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/t10k-images.idx3-ubyte",
+                                           "D:/Project/DS201/TH3/Data/t10k-labels.idx1-ubyte")
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
 test_dataloader = DataLoader(test_dataset, 32, True, collate_fn= utils.collate_fn)
 
 # load model
-model_0 = LeNetModel().to(device)
+model_0 = GoogLeNet().to(device)
 
 # loss and optim
 optimizer = optim.SGD(params= model_0.parameters(),
@@ -34,9 +35,9 @@ loss_fn = nn.CrossEntropyLoss().to(device)
 
 # Accuracy, Precision, Recall và F1-Macro
 Acc_fn = Accuracy(task= "multiclass", num_classes= 10)
-Prec_fn = Precision(task= "multiclass", num_classes= 10)
-Recall_fn = Recall(task= "multiclass", num_classes= 10)
-F1_score = F1Score(task= "multiclass", num_classes= 10, average= 'macro')
+Prec_fn = Precision(task= "multiclass", num_classes= 10, average= 'macro')
+Recall_fn = Recall(task= "multiclass", num_classes= 10, average= 'macro')
+F1_score = F1Score(task= "multiclass", num_classes= 10)
 
 for epoch in range(5):
     print(f"Epoch {epoch + 1}: ---------")
@@ -61,7 +62,7 @@ for epoch in range(5):
 
     print("*"*30)
     print("Training:")
-    print(f"Loss: {loss_all:.5f}")
+    print(f"Loss: {loss_all:.10f}")
 
     # Evaluate
 
@@ -89,7 +90,7 @@ for epoch in range(5):
 
         print("*"*30)
         print("Evaluating:")
-        print(f"Accuracy: {ev_acc:.5f}")
-        print(f"Precision: {ev_prec:.5f}")
-        print(f"Recall: {ev_recall:.5f}")
-        print(f"F1-score: {ev_f1:.5f}")
+        print(f"Accuracy: {ev_acc:.10f}")
+        print(f"Precision: {ev_prec:.10f}")
+        print(f"Recall: {ev_recall:.10f}")
+        print(f"F1-score: {ev_f1:.10f}")
