@@ -40,10 +40,10 @@ optimizer = optim.SGD(params= model_0.parameters(),
 loss_fn = nn.CrossEntropyLoss().to(device)
 
 # Accuracy, Precision, Recall và F1-Macro
-Acc_fn = Accuracy(task= "multiclass", num_classes= 10)
-Prec_fn = Precision(task= "multiclass", num_classes= 10, average= 'macro')
-Recall_fn = Recall(task= "multiclass", num_classes= 10, average= 'macro')
-F1_score = F1Score(task= "multiclass", num_classes= 10)
+Acc_fn = Accuracy(task= "multiclass", num_classes= 10).to(device)
+Prec_fn = Precision(task= "multiclass", num_classes= 10, average= 'macro').to(device)
+Recall_fn = Recall(task= "multiclass", num_classes= 10, average= 'macro').to(device)
+F1_score = F1Score(task= "multiclass", num_classes= 10).to(device)
 
 for epoch in range(5):
     print(f"Epoch {epoch + 1}: ---------")
