@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 import numpy as np
 import idx2numpy
-import json
+import pickle
 
 class MNISTDataset(Dataset):
     def __init__(self, img_path, label_path):
@@ -26,8 +26,9 @@ class MNISTDataset(Dataset):
     
 class CIFAR10Dataset(Dataset):
     def __init__(self, data_path):
-        f = open(data_path)
-        data = json.load(f)
+        with open(data_path, 'rb') as f:
+            data = pickle.load(f)
+            
         self.data = {}
 
         for idx in range(len(data["labels"])):
