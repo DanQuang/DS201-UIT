@@ -52,7 +52,7 @@ class ResNet(nn.Module):
     
 class ResNet18(ResNet):
     def __init__(self, num_classes = 10):
-        super.__init__(((2, 64), (2, 128), (2, 256), (2, 512)), num_classes)
+        super().__init__(((2, 64), (2, 128), (2, 256), (2, 512)), num_classes)
 
     def forward(self, x):
         if (x.dim() == 3):
