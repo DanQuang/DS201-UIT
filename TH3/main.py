@@ -2,9 +2,10 @@ import torch
 from torch import nn 
 from torch.utils.data import Dataset, DataLoader
 from data_utils import dataset, utils
-from model.LeNet import LeNetModel
+from model.LeNet import LeNet
 from model.GoogLeNet import GoogLeNet
 from model.ResNet18 import ResNet18
+from model.ResNet50 import ResNet50
 from torch import optim
 from torchmetrics import Accuracy, F1Score, Precision, Recall
 from tqdm.auto import tqdm
@@ -14,24 +15,37 @@ from tqdm.auto import tqdm
 device = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(42)
 
-# load data
-# # MNIST
-# train_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/train-images.idx3-ubyte",
-#                                             "D:/Project/DS201/TH3/Data/train-labels.idx1-ubyte")
+config = {
+    'dataset': "CIFAR10", # MNIST, CIFAR10, PASCAL
+    'model': "ResNet18",   # LeNet, GoogLeNet, ResNet18, ResNet50
+    'num_classes': 10
+}
 
-# test_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/t10k-images.idx3-ubyte",
-#                                            "D:/Project/DS201/TH3/Data/t10k-labels.idx1-ubyte")
 
-# CIFAR10
-train_dataset = dataset.CIFAR10Dataset('data_train.pkl')
-test_dataset = dataset.CIFAR10Dataset('data_test.pkl')
+# Load data
+if config["dataset"] == "CIFAR10":
+    # CIFAR10
+    train_dataset = dataset.CIFAR10Dataset('data_train.pkl')
+    test_dataset = dataset.CIFAR10Dataset('data_test.pkl')
+elif config["dataset"] == "MNIST":
+    # MNIST
+    train_dataset = dataset.MNISTDataset("./DS201/TH3/Data/train-images.idx3-ubyte",
+                                        "./DS201/TH3/Data/train-labels.idx1-ubyte")
+
+    test_dataset = dataset.MNISTDataset("./DS201/TH3/Data/t10k-images.idx3-ubyte",
+                                        "./DS201/TH3/Data/t10k-labels.idx1-ubyte")
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
-test_dataloader = DataLoader(test_dataset, 32, True, collate_fn= utils.collate_fn)
+test_dataloader = DataLoader(test_dataset, 32, False, collate_fn= utils.collate_fn)
 
 # load model
-model_0 = ResNet18().to(device)
+if config["model"] == "LeNet":
+    model_0 = LeNet().to(device)
+elif config["model"] == "GoogLeNet":
+    model_0 = GoogLeNet().to(device)
+elif config["model"] == "ResNet18":
+    model_0 = ResNet18().to(device)
 
 # loss and optim
 optimizer = optim.SGD(params= model_0.parameters(),
@@ -40,10 +54,10 @@ optimizer = optim.SGD(params= model_0.parameters(),
 loss_fn = nn.CrossEntropyLoss().to(device)
 
 # Accuracy, Precision, Recall và F1-Macro
-Acc_fn = Accuracy(task= "multiclass", num_classes= 10).to(device)
-Prec_fn = Precision(task= "multiclass", num_classes= 10, average= 'macro').to(device)
-Recall_fn = Recall(task= "multiclass", num_classes= 10, average= 'macro').to(device)
-F1_score = F1Score(task= "multiclass", num_classes= 10).to(device)
+Acc_fn = Accuracy(task= "multiclass", num_classes= config["num_classes"]).to(device)
+Prec_fn = Precision(task= "multiclass", num_classes= config["num_classes"], average= 'macro').to(device)
+Recall_fn = Recall(task= "multiclass", num_classes= config["num_classes"], average= 'macro').to(device)
+F1_score = F1Score(task= "multiclass", num_classes= config["num_classes"]).to(device)
 
 for epoch in range(5):
     print(f"Epoch {epoch + 1}: ---------")
