@@ -23,8 +23,8 @@ torch.manual_seed(42)
 #                                            "D:/Project/DS201/TH3/Data/t10k-labels.idx1-ubyte")
 
 # CIFAR10
-train_dataset = dataset.CIFAR10Dataset(data_train)
-test_dataset = dataset.CIFAR10Dataset(data_test)
+train_dataset = dataset.CIFAR10Dataset('data_train.json')
+test_dataset = dataset.CIFAR10Dataset('data_test.json')
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)

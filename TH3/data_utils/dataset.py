@@ -1,6 +1,7 @@
 from torch.utils.data import Dataset
 import numpy as np
 import idx2numpy
+import json
 
 class MNISTDataset(Dataset):
     def __init__(self, img_path, label_path):
@@ -24,7 +25,9 @@ class MNISTDataset(Dataset):
         return self.__data[idx]
     
 class CIFAR10Dataset(Dataset):
-    def __init__(self, data):
+    def __init__(self, data_path):
+        f = open(data_path)
+        data = json.load(f)
         self.data = {}
 
         for idx in range(len(data["labels"])):
