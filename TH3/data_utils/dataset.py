@@ -22,3 +22,20 @@ class MNISTDataset(Dataset):
     
     def __getitem__(self, idx):
         return self.__data[idx]
+    
+class CIFAR10Dataset(Dataset):
+    def __init__(self, data):
+        self.data = {}
+
+        for idx in range(len(data["labels"])):
+            self.data[idx] = {
+                "image": data["data"][idx],
+                "label": data["labels"][idx],
+                "filename": data["filenames"][idx]
+            }
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        return self.data[idx]

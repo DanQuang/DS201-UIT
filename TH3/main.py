@@ -14,11 +14,16 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(42)
 
 # load data
-train_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/train-images.idx3-ubyte",
-                                            "D:/Project/DS201/TH3/Data/train-labels.idx1-ubyte")
+# # MNIST
+# train_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/train-images.idx3-ubyte",
+#                                             "D:/Project/DS201/TH3/Data/train-labels.idx1-ubyte")
 
-test_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/t10k-images.idx3-ubyte",
-                                           "D:/Project/DS201/TH3/Data/t10k-labels.idx1-ubyte")
+# test_dataset = dataset.MNISTDataset("D:/Project/DS201/TH3/Data/t10k-images.idx3-ubyte",
+#                                            "D:/Project/DS201/TH3/Data/t10k-labels.idx1-ubyte")
+
+# CIFAR10
+train_dataset = dataset.CIFAR10Dataset(data_train)
+test_dataset = dataset.CIFAR10Dataset(data_test)
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
