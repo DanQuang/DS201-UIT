@@ -4,6 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 from data_utils import dataset, utils
 from model.LeNet import LeNetModel
 from model.GoogLeNet import GoogLeNet
+from model.ResNet18 import ResNet18
 from torch import optim
 from torchmetrics import Accuracy, F1Score, Precision, Recall
 from tqdm.auto import tqdm
@@ -30,7 +31,7 @@ train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate
 test_dataloader = DataLoader(test_dataset, 32, True, collate_fn= utils.collate_fn)
 
 # load model
-model_0 = GoogLeNet().to(device)
+model_0 = ResNet18().to(device)
 
 # loss and optim
 optimizer = optim.SGD(params= model_0.parameters(),
