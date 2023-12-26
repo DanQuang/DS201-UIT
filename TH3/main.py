@@ -90,7 +90,7 @@ for epoch in range(5):
             y_logits = model_0(X)
             y_pred = torch.softmax(y_logits, dim = 1)
 
-            acc, prec, recall, f1 = evaluate.compute_score(config["num_classes"], y, y_pred)
+            acc, prec, recall, f1 = evaluate.compute_score(config["num_classes"], y, y_pred.argmax(dim = 1))
 
             ev_acc += acc
             ev_prec += prec
