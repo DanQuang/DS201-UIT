@@ -35,8 +35,8 @@ elif config["dataset"] == "MNIST":
                                         "./DS201/TH3/Data/t10k-labels.idx1-ubyte")
 
 # Load Dataloader
-train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
-test_dataloader = DataLoader(test_dataset, 32, False, collate_fn= utils.collate_fn)
+train_dataloader = DataLoader(train_dataset, 64, True)
+test_dataloader = DataLoader(test_dataset, 32, False)
 
 # load model
 if config["model"] == "ResNet50":
@@ -56,9 +56,9 @@ for epoch in range(5):
     # Train model
     loss_all = 0.
     model_0.train()
-    for batch, (X, y) in tqdm(enumerate(train_dataloader)):
+    for batch, item in tqdm(enumerate(train_dataloader)):
         optimizer.zero_grad()
-        X, y = X.to(device), y.to(device)
+        X, y = item["image"].to(device), item["label"].to(device)
 
         # Forward
         y_logits = model_0(X)
@@ -82,8 +82,8 @@ for epoch in range(5):
     ev_f1 = 0.
     model_0.eval()
     with torch.inference_mode():
-        for batch, (X, y) in tqdm(enumerate(test_dataloader)):
-            X, y = X.to(device), y.to(device)
+        for batch, item in tqdm(enumerate(test_dataloader)):
+            X, y = item["image"].to(device), item["label"].to(device)
             y_logits = model_0(X)
             y_pred = torch.softmax(y_logits, dim = 1)
 
