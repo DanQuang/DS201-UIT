@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-class LeNetModel(nn.Module):
-    def __init__(self):
+class LeNet(nn.Module):
+    def __init__(self, num_classes):
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, stride=1, padding=2)
         self.avgpool = nn.AvgPool2d(2, 2)
@@ -15,7 +15,7 @@ class LeNetModel(nn.Module):
         self.fc2 = nn.Linear(in_features= 120,
                              out_features= 84)
         self.fc3 = nn.Linear(in_features= 84,
-                             out_features= 10)
+                             out_features= num_classes)
         
 
     def forward(self, x: torch.Tensor):
