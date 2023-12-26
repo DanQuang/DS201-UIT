@@ -51,9 +51,9 @@ class Inception(nn.Module):
     
 
 class GoogLeNet(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes):
         super().__init__()
-        self.num_classes = 10
+        self.num_classes = num_classes
         
         self.net = nn.Sequential(self.b1(), self.b2(), self.b3(), self.b4(), self.b5(),
                                  nn.LazyLinear(self.num_classes))

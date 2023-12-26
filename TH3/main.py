@@ -1,13 +1,13 @@
 import torch
 from torch import nn 
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader
 from data_utils import dataset, utils
 from model.LeNet import LeNet
 from model.GoogLeNet import GoogLeNet
 from model.ResNet18 import ResNet18
 from model.ResNet50 import ResNet50
 from torch import optim
-from torchmetrics import Accuracy, F1Score, Precision, Recall
+from evaluate import evaluate
 from tqdm.auto import tqdm
 
 
@@ -41,23 +41,17 @@ test_dataloader = DataLoader(test_dataset, 32, False, collate_fn= utils.collate_
 
 # load model
 if config["model"] == "LeNet":
-    model_0 = LeNet().to(device)
+    model_0 = LeNet(config["num_classes"]).to(device)
 elif config["model"] == "GoogLeNet":
-    model_0 = GoogLeNet().to(device)
+    model_0 = GoogLeNet(config["num_classes"]).to(device)
 elif config["model"] == "ResNet18":
-    model_0 = ResNet18().to(device)
+    model_0 = ResNet18(config["num_classes"]).to(device)
 
 # loss and optim
 optimizer = optim.SGD(params= model_0.parameters(),
                   lr = 0.01,
                   momentum= 0.5)
 loss_fn = nn.CrossEntropyLoss().to(device)
-
-# Accuracy, Precision, Recall và F1-Macro
-Acc_fn = Accuracy(task= "multiclass", num_classes= config["num_classes"]).to(device)
-Prec_fn = Precision(task= "multiclass", num_classes= config["num_classes"], average= 'macro').to(device)
-Recall_fn = Recall(task= "multiclass", num_classes= config["num_classes"], average= 'macro').to(device)
-F1_score = F1Score(task= "multiclass", num_classes= config["num_classes"]).to(device)
 
 for epoch in range(5):
     print(f"Epoch {epoch + 1}: ---------")
@@ -85,23 +79,23 @@ for epoch in range(5):
     print(f"Loss: {loss_all:.10f}")
 
     # Evaluate
-
     ev_acc = 0.
     ev_prec = 0.
     ev_recall = 0.
     ev_f1 = 0.
     model_0.eval()
     with torch.inference_mode():
-
         for batch, (X, y) in tqdm(enumerate(test_dataloader)):
             X, y = X.to(device), y.to(device)
             y_logits = model_0(X)
             y_pred = torch.softmax(y_logits, dim = 1)
 
-            ev_acc += Acc_fn(y, y_pred.argmax(dim = 1))
-            ev_prec += Prec_fn(y, y_pred.argmax(dim = 1))
-            ev_recall += Recall_fn(y, y_pred.argmax(dim = 1))
-            ev_f1 += F1_score(y, y_pred.argmax(dim = 1))      
+            acc, prec, recall, f1 = evaluate.compute_score(config["num_classes"], y, y_pred)
+
+            ev_acc += acc
+            ev_prec += prec
+            ev_recall += recall
+            ev_f1 += f1
 
         ev_acc /= len(test_dataloader)
         ev_prec /= len(test_dataloader)
