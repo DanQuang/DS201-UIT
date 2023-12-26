@@ -2,9 +2,7 @@ import torch
 from torch import nn 
 from torch.utils.data import DataLoader
 from data_utils import dataset, utils
-from model.LeNet import LeNet
-from model.GoogLeNet import GoogLeNet
-from model.ResNet18 import ResNet18
+from model.VGG19 import VGG19
 from model.ResNet50 import ResNet50
 from torch import optim
 from evaluate import evaluate
@@ -16,17 +14,18 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(42)
 
 config = {
-    'dataset': "CIFAR10", # MNIST, CIFAR10, PASCAL
-    'model': "ResNet18",   # LeNet, GoogLeNet, ResNet18, ResNet50
-    'num_classes': 10
+    'dataset': "ChessXray", # MNIST, CIFAR10, PASCAL
+    'model': "ResNet50",   # LeNet, GoogLeNet, ResNet18, ResNet50
+    'num_classes': 2
 }
 
 
 # Load data
-if config["dataset"] == "CIFAR10":
+if config["dataset"] == "ChessXray":
     # CIFAR10
-    train_dataset = dataset.CIFAR10Dataset('data_train.pkl')
-    test_dataset = dataset.CIFAR10Dataset('data_test.pkl')
+    train_dataset = dataset.ChessXrayDataset('./check_xray/train')
+    test_dataset = dataset.ChessXrayDataset('./check_xray/test')
+    val_dataset = dataset.ChessXrayDataset('./check_xray/val')
 elif config["dataset"] == "MNIST":
     # MNIST
     train_dataset = dataset.MNISTDataset("./DS201/TH3/Data/train-images.idx3-ubyte",
@@ -40,12 +39,10 @@ train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate
 test_dataloader = DataLoader(test_dataset, 32, False, collate_fn= utils.collate_fn)
 
 # load model
-if config["model"] == "LeNet":
-    model_0 = LeNet(config["num_classes"]).to(device)
-elif config["model"] == "GoogLeNet":
-    model_0 = GoogLeNet(config["num_classes"]).to(device)
-elif config["model"] == "ResNet18":
-    model_0 = ResNet18(config["num_classes"]).to(device)
+if config["model"] == "ResNet50":
+    model_0 = ResNet50(config["num_classes"]).to(device)
+elif config["model"] == "VGG19":
+    model_0 = VGG19(config["num_classes"]).to(device)
 
 # loss and optim
 optimizer = optim.SGD(params= model_0.parameters(),
