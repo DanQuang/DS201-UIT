@@ -9,7 +9,7 @@ class VGG19(nn.Module):
         self.num_classes = num_classes
         self.vgg19 = models.vgg19(pretrained= True)
         for param in self.vgg19.parameters():
-            param.requires_grad = False
+            param.requires_grad = True
 
         self.vgg19.classifier[-1] = nn.LazyLinear(num_classes)
 
