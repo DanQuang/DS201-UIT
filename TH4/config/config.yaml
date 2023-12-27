@@ -18,4 +18,5 @@ pretrained: True
 freeze: False
 learning_rate: 0.001
 num_epochs: 5
+seed: 12345
 best_metric: accuracy # accuracy, f1, precision, recall

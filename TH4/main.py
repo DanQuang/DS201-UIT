@@ -1,4 +1,4 @@
-import os
+import torch
 import yaml
 import argparse
 import logging
@@ -13,6 +13,7 @@ def main(config_path: Text) -> None:
     with open(config_path) as f:
         config = yaml.safe_load(f)
 
+    torch.manual_seed(config["seed"])
     logging.info("Training started...")
     Train_Task(config).train()
 
