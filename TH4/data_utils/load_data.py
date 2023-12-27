@@ -9,12 +9,12 @@ class Load_Data_ChestXray:
         self.test_batch = config["test_batch"]
 
         self.train_path = config["train_path"]
-        self.val_path = config["val_path"]
+        self.dev_path = config["dev_path"]
         self.test_path = config["test_path"]
 
     def load_train_dev(self):
         train_dataset = dataset.ChessXrayDataset(self.train_path)
-        val_dataset = dataset.ChessXrayDataset(self.val_path)
+        val_dataset = dataset.ChessXrayDataset(self.dev_path)
 
 
         train_dataloader = DataLoader(train_dataset, self.train_batch, shuffle= True)

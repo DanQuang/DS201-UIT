@@ -1,0 +1,13 @@
+train_path: './train'
+dev_path: './dev'
+test_path: './test'
+train_batch: 128
+dev_batch: 128
+test_batch: 128
+save_path: ./checkpoint
+num_classes: 10
+patience: 5
+model: GoogLeNet # LeNet, AlexNet, VGG, NiN, GoogLeNet
+learning_rate: 0.001
+num_epochs: 5
+best_metric: accuracy # accuracy, f1, precision, recall
