@@ -85,7 +85,7 @@ class Load_Data:
             return Load_Data_Jewellery(config)
         
     def load_train_dev(self):
-        self.load_data.load_train_dev()
+        return self.load_data.load_train_dev()
 
     def load_test(self):
-        self.load_data.load_test()
+        return self.load_data.load_test()
