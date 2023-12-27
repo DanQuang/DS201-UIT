@@ -1,6 +1,12 @@
-train_path: './chest_xray/train'
-dev_path: './chest_xray/val'
-test_path: './chest_xray/test'
+dataset:
+  name_dataset: ChestXray
+  ChestXray:
+    train_path: ./chest_xray/train
+    dev_path: ./chest_xray/val
+    test_path: ./chest_xray/test
+  Jewellery:
+    train_path: ./Jewellery-Classification/dataset/training
+    test_path: ./Jewellery-Classification/dataset/test
 train_batch: 128
 dev_batch: 128
 test_batch: 128
