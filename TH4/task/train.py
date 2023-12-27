@@ -20,7 +20,7 @@ class Train_Task:
             self.model = ResNet50.ResNet50(config).to(self.device)
         elif self.model_name == "VGG19":
             self.model = VGG19.VGG19(config).to(self.device)
-        self.dataloader = load_data.Load_Data_ChestXray(config)
+        self.dataloader = load_data.Load_Data(config)
         self.loss = nn.CrossEntropyLoss()
         self.optim = optim.SGD(self.model.parameters(), lr= self.learning_rate, momentum= 0.5)
 
