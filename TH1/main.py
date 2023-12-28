@@ -13,15 +13,15 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(42)
 
 # Load data
-train_dataset = dataset.MNISTDataset("C:/Users/tquan/OneDrive/Desktop/DS201/TH1/Data/train-images.idx3-ubyte",
-                                     "C:/Users/tquan/OneDrive/Desktop/DS201/TH1/Data/train-labels.idx1-ubyte")
+train_dataset = dataset.MNISTDataset("/content/drive/MyDrive/DS201/Data/MNIST/train-images.idx3-ubyte",
+                                     "/content/drive/MyDrive/DS201/Data/MNIST/train-labels.idx1-ubyte")
 
-test_dataset = dataset.MNISTDataset("C:/Users/tquan/OneDrive/Desktop/DS201/TH1/Data/t10k-images.idx3-ubyte",
-                                    "C:/Users/tquan/OneDrive/Desktop/DS201/TH1/Data/t10k-labels.idx1-ubyte")
+test_dataset = dataset.MNISTDataset("/content/drive/MyDrive/DS201/Data/MNIST/t10k-images.idx3-ubyte",
+                                    "/content/drive/MyDrive/DS201/Data/MNIST/t10k-labels.idx1-ubyte")
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
-test_dataloader = DataLoader(test_dataset, 32, True, collate_fn= utils.collate_fn)
+test_dataloader = DataLoader(test_dataset, 32, False, collate_fn= utils.collate_fn)
 
 # Create model
 # model_0 = MNISTModel().to(device)
@@ -46,12 +46,10 @@ for epoch in range(5):
     model_0.train()
     for batch, (X, y) in tqdm(enumerate(train_dataloader)):
         X, y = X.to(device), y.to(device)
-        print(y)
 
         # Forward
         y_logits = model_0(X)
         loss = loss_fn(y_logits, y)
-        print(loss.item())
         loss_all += loss.item()
 
         y_pred = torch.softmax(y_logits, dim = 1)
