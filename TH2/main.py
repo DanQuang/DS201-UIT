@@ -12,15 +12,15 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(42)
 
 # Load data
-train_dataset = dataset.FashionMNISTDataset("D:/Project/DS201/TH2/Data/train-images-idx3-ubyte",
-                                            "D:/Project/DS201/TH2/Data/train-labels-idx1-ubyte")
+train_dataset = dataset.FashionMNISTDataset("./Data/FashionMNIST/train-images-idx3-ubyte",
+                                            "./Data/FashionMNIST/train-labels-idx1-ubyte")
 
-test_dataset = dataset.FashionMNISTDataset("D:/Project/DS201/TH2/Data/t10k-images-idx3-ubyte",
-                                           "D:/Project/DS201/TH2/Data/t10k-labels-idx1-ubyte")
+test_dataset = dataset.FashionMNISTDataset("./Data/FashionMNIST/t10k-images-idx3-ubyte",
+                                           "./Data/FashionMNIST/t10k-labels-idx1-ubyte")
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
-test_dataloader = DataLoader(test_dataset, 32, True, collate_fn= utils.collate_fn)
+test_dataloader = DataLoader(test_dataset, 32, False, collate_fn= utils.collate_fn)
 
 # Create model
 model_0 = FashionMNISTModel().to(device)
