@@ -26,15 +26,15 @@ config = {
 # Load data
 if config["dataset"] == "CIFAR10":
     # CIFAR10
-    train_dataset = dataset.CIFAR10Dataset('./Data/CIFAR10/data_train.pkl')
-    test_dataset = dataset.CIFAR10Dataset('./Data/CIFAR10/data_test.pkl')
+    train_dataset = dataset.CIFAR10Dataset('/content/drive/MyDrive/DS201/Data/CIFAR10/data_train.pkl')
+    test_dataset = dataset.CIFAR10Dataset('/content/drive/MyDrive/DS201/Data/CIFAR10/data_test.pkl')
 elif config["dataset"] == "MNIST":
     # MNIST
-    train_dataset = dataset.MNISTDataset("./Data/MNIST/train-images.idx3-ubyte",
-                                        "./Data/MNIST/train-labels.idx1-ubyte")
+    train_dataset = dataset.MNISTDataset("/content/drive/MyDrive/DS201/Data/MNIST/train-images.idx3-ubyte",
+                                        "/content/drive/MyDrive/DS201/Data/MNIST/train-labels.idx1-ubyte")
 
-    test_dataset = dataset.MNISTDataset("./Data/MNIST/t10k-images.idx3-ubyte",
-                                        "./Data/MNIST/t10k-labels.idx1-ubyte")
+    test_dataset = dataset.MNISTDataset("/content/drive/MyDrive/DS201/Data/MNIST/t10k-images.idx3-ubyte",
+                                        "/content/drive/MyDrive/DS201/Data/MNIST/t10k-labels.idx1-ubyte")
 
 # Load Dataloader
 train_dataloader = DataLoader(train_dataset, 64, True, collate_fn= utils.collate_fn)
