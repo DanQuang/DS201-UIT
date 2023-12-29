@@ -85,6 +85,7 @@ for epoch in range(5):
     ev_recall = 0.
     ev_f1 = 0.
     y_preds = []
+    y_true = []
     model_0.eval()
     with torch.inference_mode():
         for batch, (X, y) in tqdm(enumerate(test_dataloader)):
@@ -92,21 +93,9 @@ for epoch in range(5):
             y_logits = model_0(X)
             y_pred = torch.softmax(y_logits, dim = 1).argmax(dim= 1)
             y_preds += y_pred.tolist()
-            # acc, prec, recall, f1 = evaluate.compute_score(config["num_classes"], y, y_pred.argmax(dim = 1))
+            y_true += y.tolist()
 
-            # ev_acc += acc
-            # ev_prec += prec
-            # ev_recall += recall
-            # ev_f1 += f1
-        ev_acc, ev_prec, ev_recall, ev_f1 = evaluate.compute_score(config['num_classes'], y, torch.tensor(y_preds))
-        # ev_acc /= len(test_dataloader)
-        # ev_prec /= len(test_dataloader)
-        # ev_recall /= len(test_dataloader)
-        # ev_f1 /= len(test_dataloader)
-
-        print("*"*30)
-        print("Evaluating:")
-        print(f"Accuracy: {ev_acc:.10f}")
-        print(f"Precision: {ev_prec:.10f}")
-        print(f"Recall: {ev_recall:.10f}")
-        print(f"F1-score: {ev_f1:.10f}")
+        if config['evaluate_per_class']:
+            evaluate.compute_score_per_class(y_true= y_true, y_pred= y_preds)
+        else:
+            evaluate.compute_score(y_true= y_true, y_pred= y_preds)

@@ -1,30 +1,17 @@
-from torchmetrics import F1Score, Accuracy, Precision, Recall
-import torch
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 
-def compute_score(num_classes, y_true, y_pred):
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    Acc_fn = Accuracy(task= "multiclass", num_classes= num_classes, average= 'macro').to(device)
-    Prec_fn = Precision(task= "multiclass", num_classes= num_classes, average= 'macro').to(device)
-    Recall_fn = Recall(task= "multiclass", num_classes= num_classes, average= 'macro').to(device)
-    F1_score = F1Score(task= "multiclass", num_classes= num_classes, average= 'macro').to(device)
+def compute_score(y_true, y_pred):
+    accuracy = accuracy_score(y_true, y_pred, average= 'macro')
+    precision = precision_score(y_true, y_pred, average= 'macro')
+    recall = recall_score(y_true, y_pred, average= 'macro')
+    f1 = f1_score(y_true, y_pred, average= 'macro')
 
-    acc = Acc_fn(y_true, y_pred)
-    prec = Prec_fn(y_true, y_pred)
-    recall = Recall_fn(y_true, y_pred)
-    f1 = F1_score(y_true, y_pred)
+    print("*"*30)
+    print("Evaluating:")
+    print(f"Accuracy: {accuracy:.10f}")
+    print(f"Precision: {precision:.10f}")
+    print(f"Recall: {recall:.10f}")
+    print(f"F1-score: {f1:.10f}")
 
-    return acc, prec, recall, f1
-
-def compute_score_per_class(num_classes, y_true, y_pred):
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    Acc_fn = Accuracy(task= "multiclass", num_classes= num_classes, average= None).to(device)
-    Prec_fn = Precision(task= "multiclass", num_classes= num_classes, average= None).to(device)
-    Recall_fn = Recall(task= "multiclass", num_classes= num_classes, average= None).to(device)
-    F1_score = F1Score(task= "multiclass", num_classes= num_classes, average= None).to(device)
-
-    acc = Acc_fn(y_true, y_pred)
-    prec = Prec_fn(y_true, y_pred)
-    recall = Recall_fn(y_true, y_pred)
-    f1 = F1_score(y_true, y_pred)
-
-    return acc, prec, recall, f1
+def compute_score_per_class(y_true, y_pred):
+    print(classification_report(y_true= y_true, y_pred= y_pred))
