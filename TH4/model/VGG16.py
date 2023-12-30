@@ -14,7 +14,7 @@ class VGG16(nn.Module):
             for param in self.vgg16.parameters():
                 param.requires_grad = False
 
-        self.vgg19.classifier[-1] = nn.LazyLinear(self.num_classes)
+        self.vgg16.classifier[-1] = nn.LazyLinear(self.num_classes)
 
     def forward(self, x):
         if (x.dim() == 3):
