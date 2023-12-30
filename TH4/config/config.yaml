@@ -15,9 +15,9 @@ train_batch: 128
 dev_batch: 128
 test_batch: 128
 save_path: ./checkpoint
-num_classes: 10
+num_classes: 2
 patience: 5
-model: ResNet50 # ResNet50, VGG19
+model: VGG16 # ResNet50, VGG19, VGG16
 pretrained: True
 freeze: False
 learning_rate: 0.001
