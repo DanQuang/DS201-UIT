@@ -73,6 +73,30 @@ class Load_Data_Jewellery:
         test_dataloader = DataLoader(test_dataset, self.test_batch, shuffle= False)
         return test_dataloader
     
+class Load_Data_Vegetable:
+    def __init__(self, config):
+        self.train_batch = config["train_batch"]
+        self.dev_batch = config["dev_batch"]
+        self.test_batch = config["test_batch"]
+
+        self.train_path = config['dataset']['ChestXray']["train_path"]
+        self.dev_path = config['dataset']['ChestXray']["dev_path"]
+        self.test_path = config['dataset']['ChestXray']["test_path"]
+
+    def load_train_dev(self):
+        train_dataset = MyDataset(self.train_path)
+        val_dataset = MyDataset(self.dev_path)
+
+        train_dataloader = DataLoader(train_dataset, self.train_batch, shuffle= True)
+        dev_dataloader = DataLoader(val_dataset, self.dev_batch, shuffle= False)
+
+        return train_dataloader, dev_dataloader
+    
+    def load_test(self):
+        test_dataset = MyDataset(self.test_path)
+        test_dataloader = DataLoader(test_dataset, self.test_batch, shuffle= False)
+        return test_dataloader
+    
 class Load_Data:
     def __init__(self, config):
         self.name_dataset = config["dataset"]["name_dataset"]
@@ -83,6 +107,8 @@ class Load_Data:
             return Load_Data_ChestXray(config)
         elif self.name_dataset == "Jewellery":
             return Load_Data_Jewellery(config)
+        elif self.name_dataset == "Vegetable":
+            return Load_Data_Vegetable(config)
         
     def load_train_dev(self):
         return self.load_data.load_train_dev()

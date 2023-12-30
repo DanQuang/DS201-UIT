@@ -7,6 +7,10 @@ dataset:
   Jewellery:
     train_path: ./Jewellery-Classification/dataset/training
     test_path: ./Jewellery-Classification/dataset/test
+  Vegetable:
+    train_path: ./Vegetable Images/train
+    dev_path: ./Vegetable Images/validation
+    test_path: ./Vegetable Images/test
 train_batch: 128
 dev_batch: 128
 test_batch: 128
