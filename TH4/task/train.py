@@ -22,7 +22,7 @@ class Train_Task:
             self.model = VGG19.VGG19(config).to(self.device)
         self.dataloader = load_data.Load_Data(config)
         self.loss = nn.CrossEntropyLoss()
-        self.optim = optim.Adam(self.model.parameters(), lr= self.learning_rate, momentum= 0.5)
+        self.optim = optim.Adam(self.model.parameters(), lr= self.learning_rate)
 
     def train(self):
         train, dev = self.dataloader.load_train_dev()
