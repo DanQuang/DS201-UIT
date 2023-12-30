@@ -35,9 +35,9 @@ class Test_Task:
                 for _, item in tqdm(enumerate(test)):
                     X, y = item["image"].to(self.device), item["label"].to(self.device)
                     y_logits = self.model(X)
-                    y_preds = y_logits.argmax(dim = -1)
+                    y_preds = torch.softmax(y_logits, dim = 1).argmax(dim= 1)
 
-                    acc, prec, recall, f1 = evaluate.compute_score(self.num_classes, y, y_preds)
+                    acc, prec, recall, f1 = evaluate.compute_score(y, y_preds)
 
                     ev_acc += acc
                     ev_prec += prec
