@@ -19,4 +19,4 @@ class VGG16(nn.Module):
     def forward(self, x):
         if (x.dim() == 3):
             x = x.unsqueeze(dim = 1)
-        return self.vgg19(x)
+        return self.vgg16(x)
