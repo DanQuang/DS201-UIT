@@ -2,7 +2,7 @@ import torch
 from torch import nn, optim
 import os
 from tqdm.auto import tqdm
-from model import ResNet50, VGG19
+from model import ResNet50, VGG19, VGG16
 from data_utils import load_data
 from evaluate import evaluate
 
@@ -20,6 +20,8 @@ class Train_Task:
             self.model = ResNet50.ResNet50(config).to(self.device)
         elif self.model_name == "VGG19":
             self.model = VGG19.VGG19(config).to(self.device)
+        elif self.model_name == "VGG16":
+            self.model = VGG16.VGG16(config).to(self.device)
         self.dataloader = load_data.Load_Data(config)
         self.loss = nn.CrossEntropyLoss()
         self.optim = optim.Adam(self.model.parameters(), lr= self.learning_rate)
