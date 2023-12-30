@@ -37,7 +37,7 @@ class Test_Task:
                     y_logits = self.model(X)
                     y_preds = torch.softmax(y_logits, dim = 1).argmax(dim= 1)
 
-                    acc, prec, recall, f1 = evaluate.compute_score(y, y_preds)
+                    acc, prec, recall, f1 = evaluate.compute_score(y.cpu().numpy(), y_preds.cpu().numpy())
 
                     ev_acc += acc
                     ev_prec += prec
