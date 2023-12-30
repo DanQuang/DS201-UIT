@@ -9,7 +9,7 @@ class VGG19(nn.Module):
         self.num_classes = config["num_classes"]
         self.pretrained = config["pretrained"]
         self.freeze = config["freeze"]
-        self.vgg19 = models.vgg19(pretrained= self.pretrained)
+        self.vgg19 = models.vgg19(weights= 'DEFAULT')
         if self.freeze:
             for param in self.vgg19.parameters():
                 param.requires_grad = False

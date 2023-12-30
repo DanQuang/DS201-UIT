@@ -9,7 +9,7 @@ class ResNet50(nn.Module):
         self.num_classes = config["num_classes"]
         self.pretrained = config["pretrained"]
         self.freeze = config["freeze"]
-        self.resnet = models.resnet50(pretrained= self.pretrained)
+        self.resnet = models.resnet50(weights= 'DEFAULT')
         if self.freeze:
             for param in self.resnet.parameters():
                 param.requires_grad = False
