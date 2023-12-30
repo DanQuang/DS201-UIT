@@ -79,9 +79,9 @@ class Load_Data_Vegetable:
         self.dev_batch = config["dev_batch"]
         self.test_batch = config["test_batch"]
 
-        self.train_path = config['dataset']['ChestXray']["train_path"]
-        self.dev_path = config['dataset']['ChestXray']["dev_path"]
-        self.test_path = config['dataset']['ChestXray']["test_path"]
+        self.train_path = config['dataset']['Vegetable']["train_path"]
+        self.dev_path = config['dataset']['Vegetable']["dev_path"]
+        self.test_path = config['dataset']['Vegetable']["test_path"]
 
     def load_train_dev(self):
         train_dataset = MyDataset(self.train_path)
