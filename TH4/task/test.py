@@ -31,7 +31,7 @@ class Test_Task:
             test_preds = []
             self.model.eval()
             with torch.inference_mode():
-                for _, item in tqdm(enumerate(test)):
+                for _, item in enumerate(tqdm(test)):
                     X, y = item["image"].to(self.device), item["label"].to(self.device)
                     test_trues += y.tolist()
                     y_logits = self.model(X)

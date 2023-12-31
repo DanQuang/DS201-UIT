@@ -19,8 +19,8 @@ num_classes: 2
 patience: 5
 model: VGG16 # ResNet50, VGG19, VGG16
 pretrained: True
-freeze: False
+freeze: True
 learning_rate: 0.001
 num_epochs: 5
-seed: 12345
+seed: 52
 best_metric: accuracy # accuracy, f1, precision, recall
