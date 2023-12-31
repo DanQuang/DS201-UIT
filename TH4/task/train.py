@@ -121,7 +121,7 @@ class Train_Task:
                 else:
                     threshold = 0
 
-                if score > best_score:
+                if score >= best_score:
                     best_score = score
                     torch.save({
                         'epoch': epoch,
