@@ -57,12 +57,8 @@ class Train_Task:
         self.model.train()
         for epoch in range(initial_epoch, initial_epoch + self.num_epochs):
             train_loss = 0.
-            valid_acc = 0.
-            valid_f1=0.
-            valid_precision=0.
-            valid_recall=0.
 
-            for _, item in tqdm(enumerate(train)):
+            for _, item in enumerate(tqdm(train)):
                 self.optim.zero_grad()
                 X, y = item["image"].to(self.device), item["label"].to(self.device)
 
@@ -75,24 +71,18 @@ class Train_Task:
                 loss.backward()
                 self.optim.step()
 
+            valid_preds = []
+            valid_trues = []
             with torch.inference_mode():
-                for _, item in tqdm(enumerate(dev)):
+                for _, item in enumerate(tqdm(dev)):
                     X, y = item["image"].to(self.device), item["label"].to(self.device)
+                    valid_trues += y.tolist()
                     y_logits = self.model(X)
                     y_preds = torch.softmax(y_logits, dim = 1).argmax(dim= 1)
+                    valid_preds += y_preds.tolist()
 
-                    acc, prec, recall, f1 = evaluate.compute_score(y.cpu().numpy(), y_preds.cpu().numpy())
-
-                    valid_acc += acc
-                    valid_precision += prec
-                    valid_recall += recall
-                    valid_f1 += f1
-
+                valid_acc, valid_precision, valid_recall, valid_f1 = evaluate.compute_score(valid_trues, valid_preds)
                 train_loss /= len(train)
-                valid_acc /= len(dev)
-                valid_precision /= len(dev)
-                valid_recall /= len(dev)
-                valid_f1 /= len(dev)
 
                 print(f"Epoch {epoch + 1}/{initial_epoch + self.num_epochs}")
                 print(f"Train loss: {train_loss:.5f}")

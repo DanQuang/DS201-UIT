@@ -27,31 +27,20 @@ class Test_Task:
             checkpoint = torch.load(os.path.join(self.save_path, best_model))
             self.model.load_state_dict(checkpoint["model_state_dict"])
 
-            ev_acc = 0.
-            ev_prec = 0.
-            ev_recall = 0.
-            ev_f1 = 0.
-
+            test_trues = []
+            test_preds = []
             self.model.eval()
             with torch.inference_mode():
                 for _, item in tqdm(enumerate(test)):
                     X, y = item["image"].to(self.device), item["label"].to(self.device)
+                    test_trues += y.tolist()
                     y_logits = self.model(X)
                     y_preds = torch.softmax(y_logits, dim = 1).argmax(dim= 1)
+                    test_preds += y_preds.tolist()
 
-                    acc, prec, recall, f1 = evaluate.compute_score(y.cpu().numpy(), y_preds.cpu().numpy())
+                acc, prec, recall, f1 = evaluate.compute_score(test_trues, test_preds)
 
-                    ev_acc += acc
-                    ev_prec += prec
-                    ev_recall += recall
-                    ev_f1 += f1
-
-                ev_acc /= len(test)
-                ev_prec /= len(test)
-                ev_recall /= len(test)
-                ev_f1 /= len(test)
-
-                print(f"test acc: {ev_acc:.4f} | test f1: {ev_f1:.4f} | test precision: {ev_prec:.4f} | test recall: {ev_recall:.4f}")
+                print(f"test acc: {acc:.4f} | test f1: {f1:.4f} | test precision: {prec:.4f} | test recall: {recall:.4f}")
 
         else:
             print(f"Chưa train model {self.model_name}!!")
