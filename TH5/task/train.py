@@ -14,7 +14,6 @@ class Train_Task:
         self.save_path = config["save_path"]
         self.patience = config["patience"]
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.num_classes = config["num_classes"]
         self.model_name = config["model"]["model_name"]
         if self.model_name == "RNN":
             self.model = RNN.RNN(config).to(self.device)
