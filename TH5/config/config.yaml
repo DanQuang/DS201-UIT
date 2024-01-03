@@ -1,0 +1,27 @@
+dataset:
+  dataset_folder:
+  train_path:
+  valid_path:
+  test_path:
+
+model:
+  intermediate_dims: 512
+  num_layers: 1
+  dropout: 0.1
+
+text_embedding:
+  type: tokenizer # tokenizer, count_vector
+  d_model: 512
+  max_length: 128
+
+train_batch: 128
+dev_batch: 128
+test_batch: 128
+save_path: ./checkpoint
+
+num_labels: 3
+patience: 5
+learning_rate: 0.001
+num_epochs: 5
+seed: 42
+best_metric: accuracy # accuracy, f1, precision, recall
