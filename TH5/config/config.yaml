@@ -1,10 +1,11 @@
 dataset:
-  dataset_folder:
-  train_path:
-  valid_path:
-  test_path:
+  dataset_folder: /content/drive/MyDrive/DS201/Data/UIT-VSFC/csv-files
+  train_path: train.csv
+  valid_path: dev.csv
+  test_path: test.csv
 
 model:
+  model_name: RNN
   intermediate_dims: 512
   num_layers: 1
   dropout: 0.1

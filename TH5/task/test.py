@@ -10,7 +10,7 @@ class Test_Task:
         self.save_path = config["save_path"]
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.num_classes = config["num_classes"]
-        self.model_name = config["model"]
+        self.model_name = config["model"]["model_name"]
         if self.model_name == "RNN":
             self.model = RNN.RNN(config).to(self.device)
         self.dataloader = load_data.Load_Data(config)
@@ -28,7 +28,7 @@ class Test_Task:
             self.model.eval()
             with torch.inference_mode():
                 for _, item in enumerate(tqdm(test)):
-                    X, y = item[0].to(self.device), item[1].to(self.device)
+                    X, y = item["sentence"], item["label"]
                     test_trues += y.tolist()
                     y_logits = self.model(X)
                     y_preds = torch.softmax(y_logits, dim = 1).argmax(dim= 1)

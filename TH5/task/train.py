@@ -15,7 +15,7 @@ class Train_Task:
         self.patience = config["patience"]
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.num_classes = config["num_classes"]
-        self.model_name = config["model"]
+        self.model_name = config["model"]["model_name"]
         if self.model_name == "RNN":
             self.model = RNN.RNN(config).to(self.device)
         self.dataloader = load_data.Load_Data(config)
@@ -56,7 +56,7 @@ class Train_Task:
 
             for _, item in enumerate(tqdm(train)):
                 self.optim.zero_grad()
-                X, y = item[0].to(self.device), item[1].to(self.device)
+                X, y = item["sentence"], item["label"]
 
                 # Forward
                 y_logits = self.model(X)
@@ -71,7 +71,7 @@ class Train_Task:
             valid_trues = []
             with torch.inference_mode():
                 for _, item in enumerate(tqdm(dev)):
-                    X, y = item[0].to(self.device), item[1].to(self.device)
+                    X, y = item["sentence"], item["label"]
                     valid_trues += y.tolist()
                     y_logits = self.model(X)
                     y_preds = torch.softmax(y_logits, dim = 1).argmax(dim= 1)
