@@ -43,7 +43,7 @@ class Vocab:
 
     def build_vocab(self):
         all_word, _ = self.all_word()
-        self.word_to_idx = {word: idx + 1 for word, idx in enumerate(all_word)}
+        self.word_to_idx = {word: idx + 1 for idx, word in enumerate(all_word)}
         self.idx_to_word = {idx: word for word, idx in self.word_to_idx.items()}
     
     def convert_tokens_to_ids(self, tokens):
