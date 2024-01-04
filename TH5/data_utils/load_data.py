@@ -28,10 +28,10 @@ class MyDataset(Dataset):
             "label":self.sentiments[idx]
         }
     
-class Load_data:
+class Load_Data:
     def __init__(self, config):
         self.train_batch = config["train_batch"]
-        self.dev_batch = config["valid_batch"]
+        self.dev_batch = config["dev_batch"]
         self.test_batch = config["test_batch"]
 
         self.dataset_folder = config['dataset']['dataset_folder']

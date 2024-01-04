@@ -55,7 +55,7 @@ class Train_Task:
 
             for _, item in enumerate(tqdm(train)):
                 self.optim.zero_grad()
-                X, y = item["sentence"], item["label"]
+                X, y = item["sentence"], item["label"].to(self.device)
 
                 # Forward
                 y_logits = self.model(X)
