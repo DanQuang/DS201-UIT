@@ -8,7 +8,8 @@ class WordEmbedding(nn.Module):
         self.vocab = Vocab(config)
         self.max_length = config['text_embedding']['max_length']
         self.embedding_dim = config['text_embedding']['embedding_dim']
-        self.embedding = nn.Embedding(self.vocab.vocab_size(), self.embedding_dim)
+        self.embedding = nn.Embedding(self.vocab.vocab_size(), self.embedding_dim, self.vocab.pad_token_idx())
+        self.dropout = nn.Dropout(config["text_embedding"]["dropout"])
         self.fc = nn.LazyLinear(config["text_embedding"]["d_model"])
 
     def padding(self, array, max_length, padding_value):
@@ -16,9 +17,9 @@ class WordEmbedding(nn.Module):
         if current_length < max_length:
             padding_length = max_length - current_length
             padding_array = array + [padding_value] * padding_length
-            return padding_array
+            return torch.tensor(padding_array, dtype= torch.int)
         else:
-            return array[:max_length]
+            return torch.tensor(array[:max_length], dtype= torch.int)
 
     def forward(self, input_texts):
         sequence_vectors = []
@@ -27,7 +28,8 @@ class WordEmbedding(nn.Module):
             padding_sequence = self.padding(tokens_to_ids, self.max_length, self.vocab.pad_token_idx())
             sequence_vectors.append(padding_sequence)
 
-        padding_sequences = torch.stack(sequence_vectors).to(self.fc.weight.device)
+        padding_sequences = torch.stack(sequence_vectors, dim = 0).to(self.fc.weight.device)
         out = self.embedding(padding_sequences)
+        out = self.dropout(out)
         out = self.fc(out)
         return out
