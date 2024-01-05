@@ -19,5 +19,6 @@ class RNN(nn.Module):
     def forward(self, texts):
         embbed = self.text_embedding(texts)
         rnn_output, _ = self.rnn(embbed)
-        logits = self.fc(rnn_output[:, -1, :])
+        out = rnn_output[:, -1, :]
+        logits = self.fc(out)
         return logits
