@@ -17,5 +17,5 @@ class CountVectorizer(nn.Module):
             count_vectors.append(word_counts)
 
         count_vectors = torch.stack(count_vectors, dim = 0).to(self.fc.weight.device) # Hợp các count vector thành tensor
-        count_vectors = self.fc(count_vectors)
+        count_vectors = self.fc(count_vectors).unsqueeze(1)
         return count_vectors
