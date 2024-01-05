@@ -1,7 +1,7 @@
 import torch
 import os
 from tqdm.auto import tqdm
-from model import RNN
+from model import RNN, LSTM, GRU
 from data_utils import load_data
 from evaluate import evaluate
 
@@ -12,6 +12,10 @@ class Test_Task:
         self.model_name = config["model"]["model_name"]
         if self.model_name == "RNN":
             self.model = RNN.RNN(config).to(self.device)
+        elif self.model_name == "LSTM":
+            self.model = LSTM.LSTM(config).to(self.device)
+        elif self.model_name == "GRU":
+            self.model = GRU.GRU(config).to(self.device)
         self.dataloader = load_data.Load_Data(config)
 
     def predict(self):

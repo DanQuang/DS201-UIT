@@ -5,7 +5,7 @@ dataset:
   test_path: test.csv
 
 model:
-  model_name: RNN
+  model_name: RNN # RNN, LSTM, GRU
   hidden_units: 512
   num_layers: 1
   dropout: 0.1
