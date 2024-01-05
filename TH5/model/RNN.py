@@ -8,10 +8,11 @@ class RNN(nn.Module):
         super(RNN, self).__init__()
 
         self.num_labels = config["num_labels"]
-        self.intermediate_dims = config["model"]["intermediate_dims"]
+        self.hidden_units = config["model"]["hidden_units"]
         self.dropout = config["model"]["dropout"]
+        self.embedding_dim = config["text_embedding"]["embedding_dim"]
         self.text_embedding = build_text_embbeding(config)
-        self.rnn = nn.RNN(self.intermediate_dims, self.intermediate_dims,
+        self.rnn = nn.RNN(self.embedding_dim, self.hidden_units,
                           num_layers=config['model']['num_layers'],dropout=self.dropout)
         
         self.fc = nn.LazyLinear(self.num_labels)
@@ -19,6 +20,6 @@ class RNN(nn.Module):
     def forward(self, texts):
         embbed = self.text_embedding(texts)
         rnn_output, _ = self.rnn(embbed)
-        out = rnn_output[:, -1, :]
+        out = torch.mean(rnn_output, dim = 1)
         logits = self.fc(out)
         return logits

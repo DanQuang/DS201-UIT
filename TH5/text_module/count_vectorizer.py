@@ -6,7 +6,7 @@ class CountVectorizer(nn.Module):
     def __init__(self, config):
         super(CountVectorizer, self).__init__()
         self.vocab = Vocab(config)
-        self.fc = nn.LazyLinear(config["text_embedding"]["d_model"])
+        self.fc = nn.LazyLinear(config["text_embedding"]["embedding_dim"])
 
     def forward(self, input_texts):
         count_vectors = []
